@@ -1,1174 +1,131 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth dark">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FutCentral - O Portal Definitivo do Futebol</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        pitch: {
-                            50: '#eefdf5',
-                            100: '#d6fbe3',
-                            500: '#10b981',
-                            600: '#059669',
-                            primary: '#00E676',
-                            hover: '#00c853',
-                        },
-                        darkbg: {
-                            900: '#0b131e',
-                            800: '#131e2e',
-                            700: '#1a273a',
-                            600: '#25354d',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Montserrat', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        h1, h2, h3, .font-heading {
-            font-family: 'Montserrat', sans-serif;
-        }
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b131e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #25354d;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00E676;
-        }
-        
-        .pulse-live {
-            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogos da Semana</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+    }
+
+    /* Cabeçalho Clicável */
+    header {
+      background-color: #1e293b;
+      color: white;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .refresh-badge {
+      font-size: 0.85rem;
+      background-color: #3b82f6;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+    }
+
+    /* Seção de Jogos */
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .card-jogo {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .confronto {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    /* Barra de Probabilidades em Porcentagem */
+    .prob-bar {
+      display: flex;
+      height: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: #e2e8f0;
+      font-size: 0.75rem;
+      color: white;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .time-a { background-color: #10b981; }
+    .empate { background-color: #6b7280; }
+    .time-b { background-color: #ef4444; }
+  </style>
 </head>
-<body class="bg-slate-50 dark:bg-darkbg-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+<body>
 
-    <!-- Match Score Ticker Bar -->
-    <div class="bg-darkbg-800 border-b border-slate-200 dark:border-darkbg-700 py-2.5 px-4 text-xs">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center space-x-2 text-pitch-primary font-bold shrink-0">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500 pulse-live"></span>
-                <span>AO VIVO & RESULTADOS</span>
-            </div>
-            
-            <!-- Horizontal Match Carousel Slider -->
-            <div id="tickerMatches" class="flex items-center space-x-6 overflow-x-auto no-scrollbar py-1 text-slate-300">
-                <!-- Injected via JS -->
-            </div>
+  <!-- Cabeçalho clicável -->
+  <header onclick="recarregarPagina()">
+    <h1>Portal do Futebol</h1>
+    <span class="refresh-badge">Clique para atualizar 🔄</span>
+  </header>
 
-            <div class="hidden lg:flex items-center space-x-3 shrink-0">
-                <button onclick="toggleDarkMode()" class="p-1.5 rounded-lg bg-darkbg-700 hover:bg-darkbg-600 text-slate-300 hover:text-white transition" title="Alternar Tema">
-                    <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
-                </button>
-            </div>
-        </div>
+  <main class="container">
+    <h2>Jogos da Semana & Probabilidades</h2>
+
+    <!-- Exemplo de Jogo 1 -->
+    <div class="card-jogo">
+      <div class="confronto">
+        <span>Flamengo</span>
+        <span>vs</span>
+        <span>Palmeiras</span>
+      </div>
+      <div class="prob-bar">
+        <div class="time-a" style="width: 45%;">45%</div>
+        <div class="empate" style="width: 30%;">30%</div>
+        <div class="time-b" style="width: 25%;">25%</div>
+      </div>
     </div>
 
-    <!-- Main Header -->
-    <header class="sticky top-0 z-40 bg-white/95 dark:bg-darkbg-900/95 backdrop-blur-md border-b border-slate-200 dark:border-darkbg-700 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                
-                <!-- Logo -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="resetAllFilters()">
-                    <div class="w-11 h-11 bg-gradient-to-tr from-pitch-600 to-pitch-primary rounded-xl flex items-center justify-center text-darkbg-900 shadow-lg shadow-pitch-primary/20">
-                        <i class="fa-solid fa-futbol text-2xl font-black"></i>
-                    </div>
-                    <div>
-                        <span class="text-2xl font-black tracking-tight font-heading text-slate-900 dark:text-white block leading-none">FUT<span class="text-pitch-primary">CENTRAL</span></span>
-                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-widest uppercase">Portal & Hub de Futebol</span>
-                    </div>
-                </div>
-
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex space-x-6 lg:space-x-8 font-semibold text-sm">
-                    <a href="#jogos" class="hover:text-pitch-primary transition text-slate-700 dark:text-slate-200">Jogos de Hoje</a>
-                    <a href="#artigos" class="hover:text-pitch-primary transition text-slate-700 dark:text-slate-200">Notícias & Artigos</a>
-                    <a href="#tabelas" class="hover:text-pitch-primary transition text-slate-700 dark:text-slate-200">Classificação</a>
-                    <a href="#transferencias" class="hover:text-pitch-primary transition text-slate-700 dark:text-slate-200">Mercado de Transferências</a>
-                    <a href="#contato" class="hover:text-pitch-primary transition text-slate-700 dark:text-slate-200">Contato</a>
-                </nav>
-
-                <!-- Search and Actions -->
-                <div class="flex items-center space-x-3">
-                    <div class="relative hidden sm:block w-48 lg:w-60">
-                        <input type="text" id="searchInput" placeholder="Buscar clube, atleta ou artigo..." 
-                               class="w-full pl-9 pr-8 py-2 text-xs bg-slate-100 dark:bg-darkbg-800 border border-slate-200 dark:border-darkbg-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-pitch-primary text-slate-800 dark:text-slate-100">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                            <i class="fa-solid fa-xmark text-xs"></i>
-                        </button>
-                    </div>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-darkbg-800 text-slate-700 dark:text-slate-200">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Drawer -->
-        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 dark:border-darkbg-700 bg-white dark:bg-darkbg-800 px-4 pt-3 pb-6 space-y-4">
-            <div class="relative w-full">
-                <input type="text" id="mobileSearchInput" placeholder="Buscar clube, atleta ou artigo..." 
-                       class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-darkbg-900 border border-slate-200 dark:border-darkbg-700 rounded-xl text-slate-800 dark:text-slate-100">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-            </div>
-            <nav class="flex flex-col space-y-3 font-medium text-sm">
-                <a href="#jogos" class="mobile-nav-link hover:text-pitch-primary py-1">Jogos de Hoje</a>
-                <a href="#artigos" class="mobile-nav-link hover:text-pitch-primary py-1">Notícias & Artigos</a>
-                <a href="#tabelas" class="mobile-nav-link hover:text-pitch-primary py-1">Classificação</a>
-                <a href="#transferencias" class="mobile-nav-link hover:text-pitch-primary py-1">Mercado de Transferências</a>
-                <a href="#contato" class="mobile-nav-link hover:text-pitch-primary py-1">Contato</a>
-            </nav>
-            <div class="pt-2 border-t border-slate-200 dark:border-darkbg-700 flex justify-between items-center">
-                <span class="text-xs text-slate-400">Modo Escuro / Claro:</span>
-                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-200 dark:bg-darkbg-700 text-xs font-semibold">
-                    Alternar Tema
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="flex-grow">
-
-        <!-- Hero Featured Section -->
-        <section class="relative bg-darkbg-900 py-12 md:py-16 text-white overflow-hidden border-b border-darkbg-700">
-            <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1600&auto=format&fit=crop');"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-darkbg-900 via-darkbg-900/90 to-transparent"></div>
-
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-7 space-y-4">
-                        <span class="inline-flex items-center space-x-2 px-3 py-1 bg-pitch-primary/20 text-pitch-primary border border-pitch-primary/30 text-xs font-bold uppercase rounded-full tracking-wider">
-                            <i class="fa-solid fa-fire text-xs"></i> <span>Destaque Principal</span>
-                        </span>
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-white font-heading">
-                            A Revolução Tática na Liga dos Campeões & O Novo Mercado de Transferências
-                        </h1>
-                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                            Análises profundas de dados, bastidores dos negócios milionários europeus e a cobertura exclusiva do futebol africano e nacional em tempo real.
-                        </p>
-                        <div class="flex flex-wrap gap-4 pt-2">
-                            <button onclick="scrollToArticles()" class="px-6 py-3 bg-pitch-primary hover:bg-pitch-hover text-darkbg-900 font-extrabold rounded-xl shadow-lg shadow-pitch-primary/25 transition">
-                                Ver Útimas Notícias
-                            </button>
-                            <a href="#tabelas" class="px-6 py-3 bg-darkbg-800 hover:bg-darkbg-700 text-slate-200 border border-darkbg-600 font-bold rounded-xl transition">
-                                Ver Tabelas
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Quick Fav Team Widget Banner -->
-                    <div class="lg:col-span-5 bg-darkbg-800/80 backdrop-blur-md p-6 rounded-2xl border border-darkbg-700 shadow-xl">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Seu Clube do Coração</h3>
-                            <span class="text-xs text-pitch-primary font-semibold"><i class="fa-solid fa-star mr-1"></i> Personalize</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 bg-darkbg-900/60 rounded-xl border border-darkbg-700 mb-4">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-pitch-primary border border-pitch-primary/30" id="favTeamBadge">
-                                    <i class="fa-solid fa-shield-halved text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-white" id="favTeamName">Selecione um Clube</h4>
-                                    <p class="text-xs text-slate-400">Receba atualizações exclusivas</p>
-                                </div>
-                            </div>
-                        </div>
-                        <select id="favTeamSelect" onchange="changeFavoriteTeam(this.value)" class="w-full px-3 py-2 bg-darkbg-900 text-xs font-medium text-slate-200 border border-darkbg-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-pitch-primary">
-                            <option value="">Escolha seu time favorito...</option>
-                            <option value="Real Madrid">Real Madrid CF</option>
-                            <option value="FC Barcelona">FC Barcelona</option>
-                            <option value="Manchester City">Manchester City</option>
-                            <option value="Arsenal">Arsenal FC</option>
-                            <option value="Costa do Sol">Costa do Sol (Moçambique)</option>
-                            <option value="Ferroviário de Maputo">Ferroviário de Maputo</option>
-                            <option value="Flamengo">CR Flamengo</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Live Matches / Fixtures Hub -->
-        <section id="jogos" class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                <div>
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-day text-pitch-primary"></i> Central de Partidas
-                    </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Acompanhe resultados ao vivo, próximos jogos e placares das ligas</p>
-                </div>
-
-                <!-- Match Hub Tabs -->
-                <div class="flex bg-slate-200 dark:bg-darkbg-800 p-1 rounded-xl text-xs font-bold">
-                    <button onclick="filterMatches('ao-vivo')" id="btnMatchLive" class="match-tab-btn px-4 py-2 rounded-lg bg-pitch-primary text-darkbg-900 transition shadow-sm">
-                        <span class="inline-block w-2 h-2 rounded-full bg-red-600 mr-1 pulse-live"></span> Ao Vivo
-                    </button>
-                    <button onclick="filterMatches('hoje')" id="btnMatchToday" class="match-tab-btn px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition">
-                        Hoje
-                    </button>
-                    <button onclick="filterMatches('encerrados')" id="btnMatchEnded" class="match-tab-btn px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition">
-                        Encerrados
-                    </button>
-                </div>
-            </div>
-
-            <!-- Matches Cards Grid -->
-            <div id="matchesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Javascript Injected Cards -->
-            </div>
-        </section>
-
-        <!-- Main News & Articles Section -->
-        <section id="artigos" class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-darkbg-800">
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                <div>
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-newspaper text-pitch-primary"></i> Feed de Notícias & Análises
-                    </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Mais de 12 reportagens completas e jornalismo esportivo de ponta</p>
-                </div>
-
-                <!-- Counter Badge -->
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs font-bold uppercase text-slate-400">Exibindo:</span>
-                    <span id="postsCount" class="px-3 py-1 bg-pitch-primary/20 text-pitch-primary font-extrabold rounded-full text-xs border border-pitch-primary/30">12 Publicações</span>
-                </div>
-            </div>
-
-            <!-- Category Filter Pills -->
-            <div class="flex flex-wrap gap-2 mb-8" id="categoryFilters">
-                <button onclick="filterPosts('todos')" data-cat="todos" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition bg-pitch-primary text-darkbg-900 shadow-md">
-                    <i class="fa-solid fa-list mr-1"></i> Todos
-                </button>
-                <button onclick="filterPosts('tatica')" data-cat="tatica" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition">
-                    <i class="fa-solid fa-chess mr-1"></i> Análise Tática
-                </button>
-                <button onclick="filterPosts('transferencias')" data-cat="transferencias" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition">
-                    <i class="fa-solid fa-arrow-right-arrow-left mr-1"></i> Mercado & Rumores
-                </button>
-                <button onclick="filterPosts('champions')" data-cat="champions" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition">
-                    <i class="fa-solid fa-trophy mr-1"></i> Champions League
-                </button>
-                <button onclick="filterPosts('africano')" data-cat="africano" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition">
-                    <i class="fa-solid fa-earth-africa mr-1"></i> Futebol Moçambicano / Africano
-                </button>
-                <button onclick="filterPosts('lendas')" data-cat="lendas" 
-                        class="cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition">
-                    <i class="fa-solid fa-crown mr-1"></i> Lendas & História
-                </button>
-            </div>
-
-            <!-- Empty Search State -->
-            <div id="noPostsFound" class="hidden text-center py-16 bg-slate-100 dark:bg-darkbg-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-darkbg-700">
-                <i class="fa-solid fa-soccer-ball text-4xl text-slate-400 mb-3"></i>
-                <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">Nenhum artigo encontrado</h3>
-                <p class="text-xs text-slate-500 mt-1">Tente pesquisar com outros termos ou altere a categoria selecionada.</p>
-                <button onclick="resetAllFilters()" class="mt-4 px-4 py-2 bg-pitch-primary text-darkbg-900 rounded-xl text-xs font-bold">
-                    Limpar Filtros
-                </button>
-            </div>
-
-            <!-- Articles Cards Grid (12 Items) -->
-            <div id="postsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Javascript Injected Posts -->
-            </div>
-        </section>
-
-        <!-- Interactive League Standings Table Simulator -->
-        <section id="tabelas" class="py-12 bg-slate-100 dark:bg-darkbg-800/60 border-y border-slate-200 dark:border-darkbg-700">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-ol text-pitch-primary"></i> Tabelas de Classificação
-                        </h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Classificação atualizada das principais ligas nacionais e internacionais</p>
-                    </div>
-
-                    <!-- League Tabs Selector -->
-                    <div class="flex flex-wrap gap-2 bg-slate-200 dark:bg-darkbg-900 p-1.5 rounded-xl text-xs font-bold">
-                        <button onclick="switchLeagueTable('mocambola')" id="tab-mocambola" class="league-tab px-3 py-1.5 rounded-lg bg-pitch-primary text-darkbg-900 transition">Moçambola</button>
-                        <button onclick="switchLeagueTable('premier')" id="tab-premier" class="league-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition">Premier League</button>
-                        <button onclick="switchLeagueTable('laliga')" id="tab-laliga" class="league-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition">La Liga</button>
-                        <button onclick="switchLeagueTable('champions')" id="tab-champions" class="league-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition">Champions League</button>
-                    </div>
-                </div>
-
-                <!-- Table Content Container -->
-                <div class="bg-white dark:bg-darkbg-900 rounded-2xl shadow-sm border border-slate-200 dark:border-darkbg-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs sm:text-sm">
-                            <thead class="bg-slate-50 dark:bg-darkbg-800 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200 dark:border-darkbg-700">
-                                <tr>
-                                    <th class="py-3 px-4">Pos</th>
-                                    <th class="py-3 px-4">Clube</th>
-                                    <th class="py-3 px-3 text-center">J</th>
-                                    <th class="py-3 px-3 text-center">V</th>
-                                    <th class="py-3 px-3 text-center">E</th>
-                                    <th class="py-3 px-3 text-center">D</th>
-                                    <th class="py-3 px-3 text-center hidden sm:table-cell">SG</th>
-                                    <th class="py-3 px-4 text-center font-black text-slate-900 dark:text-white">PTS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="leagueTableBody" class="divide-y divide-slate-100 dark:divide-darkbg-800 font-medium">
-                                <!-- Injected via JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Transfer Radar Section -->
-        <section id="transferencias" class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-6">
-                <span class="text-pitch-primary text-xs font-bold uppercase tracking-widest">Mercado Aquecido</span>
-                <h2 class="text-2xl font-black text-slate-900 dark:text-white mt-1">Radar de Rumores e Contratações</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="transferRadarGrid">
-                <!-- Javascript Transfer Cards Injected -->
-            </div>
-        </section>
-
-        <!-- Contact & Newsletter Section -->
-        <section id="contato" class="py-16 bg-slate-100 dark:bg-darkbg-800 border-t border-slate-200 dark:border-darkbg-700">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    
-                    <!-- Contact Form -->
-                    <div class="bg-white dark:bg-darkbg-900 p-8 rounded-2xl border border-slate-200 dark:border-darkbg-700 shadow-sm">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Fale com a Redação</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Envie sugestões de pauta, correções ou propostas comerciais.</p>
-                        
-                        <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Nome Completo</label>
-                                <input type="text" id="contactName" required placeholder="Seu nome"
-                                       class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-darkbg-800 border border-slate-200 dark:border-darkbg-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-pitch-primary">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E-mail</label>
-                                <input type="email" id="contactEmail" required placeholder="seu@email.com"
-                                       class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-darkbg-800 border border-slate-200 dark:border-darkbg-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-pitch-primary">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Mensagem</label>
-                                <textarea id="contactMessage" rows="4" required placeholder="Sua mensagem..."
-                                          class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-darkbg-800 border border-slate-200 dark:border-darkbg-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-pitch-primary resize-none"></textarea>
-                            </div>
-                            <button type="submit" id="contactSubmitBtn" class="w-full py-3 bg-pitch-primary hover:bg-pitch-hover text-darkbg-900 font-extrabold rounded-xl text-xs uppercase tracking-wider transition">
-                                Enviar Mensagem
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Newsletter & Info Box -->
-                    <div class="flex flex-col justify-between space-y-8">
-                        <div class="bg-gradient-to-br from-pitch-primary/20 via-darkbg-900 to-darkbg-900 p-8 rounded-2xl border border-pitch-primary/30 text-white relative overflow-hidden">
-                            <i class="fa-solid fa-envelope-open-text text-6xl text-pitch-primary/20 absolute -right-4 -bottom-4"></i>
-                            <span class="text-pitch-primary text-xs font-bold uppercase tracking-wider">Boletim Diário</span>
-                            <h3 class="text-2xl font-black mt-1 mb-3">Inscreva-se na Resenha FutCentral</h3>
-                            <p class="text-xs text-slate-300 leading-relaxed mb-6">
-                                Receba todas as manhãs o resumo das principais transferências, análises táticas exclusivas e horários dos jogos no seu e-mail.
-                            </p>
-                            
-                            <form onsubmit="handleNewsletterSubmit(event)" class="flex gap-2">
-                                <input type="email" id="newsletterEmail" required placeholder="Seu melhor e-mail..."
-                                       class="w-full px-4 py-2.5 text-xs bg-darkbg-800 border border-darkbg-700 rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-pitch-primary">
-                                <button type="submit" class="px-5 py-2.5 bg-pitch-primary hover:bg-pitch-hover text-darkbg-900 font-extrabold rounded-xl text-xs shrink-0 transition">
-                                    Inscrever
-                                </button>
-                            </form>
-                        </div>
-
-                        <div class="bg-white dark:bg-darkbg-900 p-6 rounded-2xl border border-slate-200 dark:border-darkbg-700 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-pitch-primary/10 rounded-2xl flex items-center justify-center text-pitch-primary text-2xl">
-                                    <i class="fa-solid fa-mobile-screen-button"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-slate-900 dark:text-white">Aplicativo FutCentral Mobile</h4>
-                                    <p class="text-xs text-slate-500">Notificações de gols em tempo real no seu celular</p>
-                                </div>
-                            </div>
-                            <button onclick="showToast('Em breve disponível na Google Play e App Store!', 'info')" class="px-4 py-2 bg-slate-100 dark:bg-darkbg-800 text-xs font-bold rounded-xl text-slate-700 dark:text-slate-300 hover:text-pitch-primary transition">
-                                Baixar App
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-darkbg-900 text-slate-400 py-12 border-t border-darkbg-700 text-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-2 text-white font-black text-xl mb-3">
-                        <i class="fa-solid fa-futbol text-pitch-primary"></i>
-                        <span>FUT<span class="text-pitch-primary">CENTRAL</span></span>
-                    </div>
-                    <p class="text-slate-400 leading-relaxed mb-4">
-                        A maior plataforma de jornalismo esportivo, dados estatísticos e cobertura global do futebol.
-                    </p>
-                    <div class="flex space-x-3">
-                        <a href="#" class="w-8 h-8 rounded-lg bg-darkbg-800 hover:bg-pitch-primary hover:text-darkbg-900 flex items-center justify-center text-white transition"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-lg bg-darkbg-800 hover:bg-pitch-primary hover:text-darkbg-900 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-lg bg-darkbg-800 hover:bg-pitch-primary hover:text-darkbg-900 flex items-center justify-center text-white transition"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Navegação</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#jogos" class="hover:text-pitch-primary transition">Central de Jogos</a></li>
-                        <li><a href="#artigos" class="hover:text-pitch-primary transition">Análises Táticas</a></li>
-                        <li><a href="#tabelas" class="hover:text-pitch-primary transition">Classificação das Ligas</a></li>
-                        <li><a href="#transferencias" class="hover:text-pitch-primary transition">Mercado da Bola</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Competições</h4>
-                    <ul class="space-y-2">
-                        <li><button onclick="switchLeagueTable('champions'); scrollToTable();" class="hover:text-pitch-primary transition">UEFA Champions League</button></li>
-                        <li><button onclick="switchLeagueTable('mocambola'); scrollToTable();" class="hover:text-pitch-primary transition">Moçambola</button></li>
-                        <li><button onclick="switchLeagueTable('premier'); scrollToTable();" class="hover:text-pitch-primary transition">Premier League</button></li>
-                        <li><button onclick="switchLeagueTable('laliga'); scrollToTable();" class="hover:text-pitch-primary transition">La Liga Espanha</button></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Informações Legais</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-pitch-primary transition">Termos de Uso</a></li>
-                        <li><a href="#" class="hover:text-pitch-primary transition">Política de Privacidade</a></li>
-                        <li><a href="#" class="hover:text-pitch-primary transition">Equipe Editorial</a></li>
-                        <li><a href="#contato" class="hover:text-pitch-primary transition">Anuncie Conosco</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-darkbg-800 pt-6 text-center text-slate-500">
-                <p>&copy; 2026 FutCentral - Todos os direitos reservados. Projeto sem erros sintáticos e 100% funcional.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Article Modal -->
-    <div id="articleModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeArticleModal()"></div>
-
-        <div class="relative bg-white dark:bg-darkbg-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl z-10 border border-slate-200 dark:border-darkbg-700 my-8">
-            <div class="relative h-64 sm:h-80 w-full">
-                <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
-                <button onclick="closeArticleModal()" class="absolute top-4 right-4 w-9 h-9 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-                <div class="absolute bottom-4 left-4">
-                    <span id="modalCategoryBadge" class="px-3 py-1 bg-pitch-primary text-darkbg-900 font-extrabold text-xs uppercase tracking-wider rounded-full shadow">
-                        Categoria
-                    </span>
-                </div>
-            </div>
-
-            <div class="p-6 sm:p-8 space-y-4">
-                <div class="flex items-center text-xs text-slate-400 space-x-4">
-                    <span><i class="fa-regular fa-calendar mr-1"></i> <span id="modalDate"></span></span>
-                    <span><i class="fa-regular fa-user mr-1"></i> <span id="modalAuthor"></span></span>
-                    <span><i class="fa-regular fa-clock mr-1"></i> <span id="modalReadTime"></span> min de leitura</span>
-                </div>
-
-                <h2 id="modalTitle" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight font-heading"></h2>
-
-                <div id="modalContent" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 pt-2">
-                    <!-- Loaded via JS -->
-                </div>
-
-                <div class="pt-6 border-t border-slate-200 dark:border-darkbg-700 flex flex-wrap items-center justify-between gap-4">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs font-bold uppercase text-slate-400">Compartilhar:</span>
-                        <button onclick="copyArticleLink()" class="px-3 py-1.5 bg-slate-100 dark:bg-darkbg-700 hover:bg-pitch-primary hover:text-darkbg-900 text-xs font-bold rounded-lg transition">
-                            <i class="fa-solid fa-link mr-1"></i> Copiar Link
-                        </button>
-                    </div>
-                    <button onclick="closeArticleModal()" class="px-5 py-2 bg-pitch-primary hover:bg-pitch-hover text-darkbg-900 font-extrabold text-xs rounded-xl transition">
-                        Fechar Leitura
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- Exemplo de Jogo 2 -->
+    <div class="card-jogo">
+      <div class="confronto">
+        <span>Real Madrid</span>
+        <span>vs</span>
+        <span>Barcelona</span>
+      </div>
+      <div class="prob-bar">
+        <div class="time-a" style="width: 50%;">50%</div>
+        <div class="empate" style="width: 20%;">20%</div>
+        <div class="time-b" style="width: 30%;">30%</div>
+      </div>
     </div>
+  </main>
 
-    <script>
-        // Data: 12 Rich Football Articles
-        const articlesData = [
-            {
-                id: 1,
-                title: "A Revolução do '3-2-5' Tático na Liga dos Campeões 2026",
-                category: "tatica",
-                categoryLabel: "Análise Tática",
-                author: "Gabriel Villa",
-                date: "23 Set, 2026",
-                readTime: "5",
-                image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop",
-                summary: "Como os principais treinadores europeus estão transformando laterais em meias de articulação para dominar a posse no terço final.",
-                content: `
-                    <p>O futebol de elite na Europa atingiu um novo patamar de complexidade tática. A transição da linha tradicional de quatro defensores para uma estrutura de construção em 3-2-5 tornou-se o padrão ouro entre os semifinalistas da UEFA Champions League.</p>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white mt-4">Laterais Invertidos e a Criação de Superioridade Numérica</h3>
-                    <p>Em vez de avançarem apenas pelas pontas para cruzamentos na área, os laterais modernos agora se posicionam ao lado do volante principal. Isso cria um 'duplo pivô' no meio-campo, bloqueando contra-ataques adversários e permitindo que os meias ofensivos flutuem entre as linhas de marcação.</p>
-                    <p>O resultado é uma ocupação racional dos espaços, onde cinco atacantes fixam a linha defensiva rival, abrindo brechas para infiltrações letais.</p>
-                `
-            },
-            {
-                id: 2,
-                title: "Moçambola 2026: A Disputa Eletrizante pelo Título Nacional",
-                category: "africano",
-                categoryLabel: "Futebol Africano",
-                author: "Mateus Tembe",
-                date: "22 Set, 2026",
-                readTime: "4",
-                image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800&auto=format&fit=crop",
-                summary: "Costa do Sol e Ferroviário de Maputo protagonizam uma das corridas mais acirradas dos últimos anos no campeonato nacional.",
-                content: `
-                    <p>O campeonato moçambicano de futebol está mais vivo do que nunca. Com desempenhos consistentes em casa e uma preparação física aprimorada, os clubes do topo da tabela mantêm os torcedores em suspense a cada rodada.</p>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white mt-4">Jovens Talentos em Destaque</h3>
-                    <p>O grande diferencial da temporada 2026 tem sido o surgimento de jovens promessas das academias locais. Atletas de 18 a 21 anos assumiram o protagonismo e atraíram olheiros de clubes do Norte da África e da Europa.</p>
-                    <p>A expetativa para os clássicos decisivos nas próximas semanas é de estádios lotados e grandes espetáculos nas quatro linhas.</p>
-                `
-            },
-            {
-                id: 3,
-                title: "Mercado da Bola: Mbappé, Haaland e os Negócios Bilionários",
-                category: "transferencias",
-                categoryLabel: "Mercado & Rumores",
-                author: "Lucas Ferreira",
-                date: "21 Set, 2026",
-                readTime: "6",
-                image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=800&auto=format&fit=crop",
-                summary: "As novas regras de fair play financeiro da UEFA e os contratos astronômicos que estão redefinindo as janelas de transferências.",
-                content: `
-                    <p>As janelas de transferências deixaram de ser apenas períodos de trocas de atletas e se tornaram verdadeiras batalhas corporativas milionárias.</p>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white mt-4">Cláusulas de Rescisão e Bônus de Produtividade</h3>
-                    <p>Para contornar o teto salarial e as restrições fiscais, os clubes têm inovado com contratos de longo prazo (até 8 anos) e metas flexíveis atreladas a conquistas individuais como a Bola de Ouro.</p>
-                    <p>A Arábia Saudita e os grandes da Premier League seguem ditando os valores de mercado para atacantes de topo.</p>
-                `
-            },
-            {
-                id: 4,
-                title: "Duelo de Gigantes nas Oitavas da Champions League",
-                category: "champions",
-                categoryLabel: "Champions League",
-                author: "Gabriel Villa",
-                date: "20 Set, 2026",
-                readTime: "5",
-                image: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=800&auto=format&fit=crop",
-                summary: "Confrontos sorteados prometem noites históricas na maior competição de clubes do planeta.",
-                content: `
-                    <p>O sorteio das fases eliminatórias da UEFA Champions League definiu cruzamentos épicos. Campeões nacionais medirão forças logo no primeiro mata-mata.</p>
-                    <p>Destaque para a reedição da final entre gigantes espanhóis e ingleses, onde a eficiência no aproveitamento de chances ditará quem avança para as quartas de final.</p>
-                `
-            },
-            {
-                id: 5,
-                title: "Lendas do Futebol: A Herança Imortal de Johan Cruyff",
-                category: "lendas",
-                categoryLabel: "Lendas & História",
-                author: "Renato Silveira",
-                date: "19 Set, 2026",
-                readTime: "7",
-                image: "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?q=80&w=800&auto=format&fit=crop",
-                summary: "Como o 'Futebol Total' do mestre holandês pavimentou o caminho para a filosofia moderna praticada por Pep Guardiola e seus pares.",
-                content: `
-                    <p>Poucos homens mudaram a história do esporte como Johan Cruyff. Primeiro como jogador revolucionário na Laranja Mecânica de 1974 e depois como arquiteto do 'Dream Team' do Barcelona nos anos 90.</p>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white mt-4">O Conceito de Espaço e Tempo</h3>
-                    <p>"Jogar futebol é muito simples, mas jogar futebol simples é a coisa mais difícil que existe." Esta frase sintetiza a busca incessante por controle de jogo, triangulações e pressão pós-perda.</p>
-                `
-            },
-            {
-                id: 6,
-                title: "Estatísticas Avançadas: O Impacto Real do xG (Gols Esperados)",
-                category: "tatica",
-                categoryLabel: "Análise Tática",
-                author: "Mariana Costa",
-                date: "18 Set, 2026",
-                readTime: "4",
-                image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=800&auto=format&fit=crop",
-                summary: "Entenda a métrica de dados que revolucionou o trabalho de scouts e analistas no futebol profissional.",
-                content: `
-                    <p>O modelo de Expected Goals (xG) mede a qualidade de uma finalização com base no histórico de milhares de chutes parecidos. Fatores como distância, ângulo, tipo de passe e pressão dos defensores alteram a probabilidade matemática de gol.</p>
-                    <p>Times que dependem apenas da sorte em chutes de longa distância costumam perder desempenho ao longo de um campeonato longo, enquanto equipes com alto xG sustentável tendem a liderar as tabelas.</p>
-                `
-            },
-            {
-                id: 7,
-                title: "A Ascensão da Seleção Moçambicana 'Os Mambas' no Cenário Africano",
-                category: "africano",
-                categoryLabel: "Futebol Africano",
-                author: "Mateus Tembe",
-                date: "17 Set, 2026",
-                readTime: "5",
-                image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=800&auto=format&fit=crop",
-                summary: "Com um trabalho estruturado na base e atletas atuando no exterior, a seleção nacional conquista respeito nas eliminatórias da CAN.",
-                content: `
-                    <p>A seleção moçambicana vive um dos seus períodos mais promissores. A organização tática aliada à experiência de atletas em ligas europeias trouxe consistência defensiva e perigo nas transições rápidas.</p>
-                    <p>A torcida local tem lotado o Estádio do Zimpeto em um ambiente contagiante de apoio contínuo.</p>
-                `
-            },
-            {
-                id: 8,
-                title: "Preparação Física e Prevenção de Lesões em Maratonas de Jogos",
-                category: "tatica",
-                categoryLabel: "Análise Tática",
-                author: "Dr. André Martins",
-                date: "16 Set, 2026",
-                readTime: "4",
-                image: "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?q=80&w=800&auto=format&fit=crop",
-                summary: "Uso de inteligência artificial e termografia ajuda fisiologistas a controlar a carga muscular dos atletas.",
-                content: `
-                    <p>Com calendários ultrapassando 65 jogos por ano, a ciência de alta performance tornou-se crucial. Sensores de GPS monitoram a distância percorrida e a frequência cardíaca em tempo real durante treinos e partidas.</p>
-                `
-            },
-            {
-                id: 9,
-                title: "O Papel dos Volantes 'Box-to-Box' no Futebol Moderno",
-                category: "tatica",
-                categoryLabel: "Análise Tática",
-                author: "Gabriel Villa",
-                date: "15 Set, 2026",
-                readTime: "5",
-                image: "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=800&auto=format&fit=crop",
-                summary: "Jogadores dinâmicos que defendem na própria área e aparecem de surpresa para finalizar no ataque oposto.",
-                content: `
-                    <p>O meio-campista completo necessita de vigor físico incomparável e inteligência espacial. Saber a hora certa de desarmar e acelerar a transição ofensiva faz desses atletas os mais valorizados do futebol mundial.</p>
-                `
-            },
-            {
-                id: 10,
-                title: "Supercopa Europeia: Detalhes do Confronto Mais Aguardado",
-                category: "champions",
-                categoryLabel: "Champions League",
-                author: "Lucas Ferreira",
-                date: "14 Set, 2026",
-                readTime: "4",
-                image: "https://images.unsplash.com/photo-1521412644187-c49fa049e84d?q=80&w=800&auto=format&fit=crop",
-                summary: "O duelo definitivo entre o campeão da Champions e o vencedor da Europa League.",
-                content: `
-                    <p>A partida que abre o calendário de decisões continentais na Europa promete intensity máxima. Ambas as equipes utilizarão seus reforços recém-contratados no time titular.</p>
-                `
-            },
-            {
-                id: 11,
-                title: "Eusébio: O Pantera Negra que Encantou o Mundo",
-                category: "lendas",
-                categoryLabel: "Lendas & História",
-                author: "Renato Silveira",
-                date: "12 Set, 2026",
-                readTime: "6",
-                image: "https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=800&auto=format&fit=crop",
-                summary: "Nascido em Moçambique, Eusébio tornou-se um dos maiores artilheiros da história do futebol mundial e ídolo eterno do Benfica.",
-                content: `
-                    <p>Com velocidade explosiva e um chute devastador de pé direito, Eusébio marcou época na Copa do Mundo de 1966 e conquistou a Bola de Ouro. Seu legado transcende gerações como um dos maiores atletas de todos os tempos.</p>
-                `
-            },
-            {
-                id: 12,
-                title: "A Tecnologia do VAR: Evolução e Novas Diretrizes de Impedimento",
-                category: "tatica",
-                categoryLabel: "Análise Tática",
-                author: "Mariana Costa",
-                date: "10 Set, 2026",
-                readTime: "5",
-                image: "https://images.unsplash.com/photo-1459865264687-595d652de67e?q=80&w=800&auto=format&fit=crop",
-                summary: "Sistemas semiautomáticos de detecção aceleram as decisões de arbitragem nas grandes ligas.",
-                content: `
-                    <p>A introdução de câmeras de alta velocidade e chips na bola reduziu o tempo médio de checagem de impedimentos para menos de 15 segundos, aumentando a fluidez do jogo e garantindo maior justiça nas marcações.</p>
-                `
-            }
-        ];
+  <script>
+    // Função acionada ao clicar no cabeçalho
+    function recarregarPagina() {
+      window.location.reload();
+    }
 
-        // Data: Matches Simulator
-        const matchesData = [
-            { id: 1, home: "Real Madrid", away: "FC Barcelona", homeScore: 2, awayScore: 1, time: "78'", status: "ao-vivo", league: "La Liga" },
-            { id: 2, id: 2, home: "Man. City", away: "Arsenal", homeScore: 0, awayScore: 0, time: "34'", status: "ao-vivo", league: "Premier League" },
-            { id: 3, home: "Costa do Sol", away: "Fer. Maputo", homeScore: 1, awayScore: 0, time: "Intervalo", status: "ao-vivo", league: "Moçambola" },
-            { id: 4, home: "Bayern Munique", away: "Dortmund", homeScore: 3, awayScore: 2, time: "Encerrado", status: "encerrados", league: "Bundesliga" },
-            { id: 5, home: "PSG", away: "Marseille", homeScore: 1, awayScore: 1, time: "Encerrado", status: "encerrados", league: "Ligue 1" },
-            { id: 6, home: "Inter de Milão", away: "Juventus", homeScore: "-", awayScore: "-", time: "20:45", status: "hoje", league: "Serie A" },
-            { id: 7, home: "Liverpool", away: "Chelsea", homeScore: "-", awayScore: "-", time: "22:00", status: "hoje", league: "Premier League" }
-        ];
+    // Configura o auto-refresh para recarregar a cada 60 segundos
+    setTimeout(() => {
+      window.location.reload();
+    }, 60000);
+  </script>
 
-        // Data: League Tables
-        const leagueTables = {
-            mocambola: [
-                { pos: 1, team: "Costa do Sol", j: 18, v: 13, e: 3, d: 2, sg: 22, pts: 42 },
-                { pos: 2, team: "Ferroviário de Maputo", j: 18, v: 12, e: 4, d: 2, sg: 19, pts: 40 },
-                { pos: 3, team: "Black Bulls", j: 18, v: 11, e: 4, d: 3, sg: 15, pts: 37 },
-                { pos: 4, team: "UD Songo", j: 18, v: 9, e: 5, d: 4, sg: 10, pts: 32 },
-                { pos: 5, team: "Ferroviário da Beira", j: 18, v: 8, e: 6, d: 4, sg: 7, pts: 30 }
-            ],
-            premier: [
-                { pos: 1, team: "Manchester City", j: 22, v: 17, e: 3, d: 2, sg: 34, pts: 54 },
-                { pos: 2, team: "Arsenal FC", j: 22, v: 16, e: 4, d: 2, sg: 28, pts: 52 },
-                { pos: 3, team: "Liverpool FC", j: 22, v: 14, e: 5, d: 3, sg: 22, pts: 47 },
-                { pos: 4, team: "Aston Villa", j: 22, v: 13, e: 3, d: 6, sg: 12, pts: 42 },
-                { pos: 5, team: "Tottenham", j: 22, v: 12, e: 4, d: 6, sg: 11, pts: 40 }
-            ],
-            laliga: [
-                { pos: 1, team: "Real Madrid CF", j: 23, v: 18, e: 4, d: 1, sg: 35, pts: 58 },
-                { pos: 2, team: "FC Barcelona", j: 23, v: 17, e: 3, d: 3, sg: 30, pts: 54 },
-                { pos: 3, team: "Atlético de Madrid", j: 23, v: 15, e: 4, d: 4, sg: 20, pts: 49 },
-                { pos: 4, team: "Girona FC", j: 23, v: 14, e: 5, d: 4, sg: 18, pts: 47 }
-            ],
-            champions: [
-                { pos: 1, team: "Real Madrid", j: 8, v: 7, e: 1, d: 0, sg: 16, pts: 22 },
-                { pos: 2, team: "Bayern Munique", j: 8, v: 6, e: 1, d: 1, sg: 12, pts: 19 },
-                { pos: 3, team: "Manchester City", j: 8, v: 6, e: 0, d: 2, sg: 11, pts: 18 },
-                { pos: 4, team: "Inter de Milão", j: 8, v: 5, e: 2, d: 1, sg: 8, pts: 17 }
-            ]
-        };
-
-        // Data: Transfers Radar
-        const transferData = [
-            { player: "Victor Osimhen", from: "Napoli", to: "Chelsea FC", val: "€110M", prob: "85%", status: "Avançado" },
-            { player: "Florian Wirtz", from: "Bayer Leverkusen", to: "Real Madrid", val: "€120M", prob: "70%", status: "Em negociação" },
-            { player: "Lamine Yamal", from: "FC Barcelona", to: "Renovação", val: "€200M+", prob: "99%", status: "Concluído" }
-        ];
-
-        // State variables
-        let activeCategory = 'todos';
-        let searchQuery = '';
-        let activeMatchFilter = 'ao-vivo';
-        let currentLeague = 'mocambola';
-
-        // DOM Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTicker();
-            renderMatches();
-            renderPosts();
-            renderLeagueTable('mocambola');
-            renderTransfers();
-            setupSearch();
-            setupMobileMenu();
-        });
-
-        // Render Score Ticker
-        function renderTicker() {
-            const container = document.getElementById('tickerMatches');
-            container.innerHTML = '';
-
-            matchesData.forEach(m => {
-                const badge = m.status === 'ao-vivo' 
-                    ? `<span class="bg-red-500/20 text-red-400 font-bold px-1.5 py-0.5 rounded text-[10px]">${m.time}</span>` 
-                    : `<span class="text-slate-400 text-[10px]">${m.time}</span>`;
-
-                container.innerHTML += `
-                    <div class="flex items-center space-x-2 shrink-0 bg-darkbg-900/60 px-3 py-1 rounded-lg border border-darkbg-700 font-medium">
-                        <span class="text-slate-200 font-bold">${m.home}</span>
-                        <span class="text-pitch-primary font-black">${m.homeScore !== '-' ? `${m.homeScore}-${m.awayScore}` : 'vs'}</span>
-                        <span class="text-slate-200 font-bold">${m.away}</span>
-                        ${badge}
-                    </div>
-                `;
-            });
-        }
-
-        // Render Matches Grid
-        function renderMatches() {
-            const grid = document.getElementById('matchesGrid');
-            grid.innerHTML = '';
-
-            const filtered = matchesData.filter(m => activeMatchFilter === 'todos' || m.status === activeMatchFilter);
-
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Nenhuma partida nesta categoria no momento.</div>`;
-                return;
-            }
-
-            filtered.forEach(m => {
-                const card = document.createElement('div');
-                card.className = "bg-white dark:bg-darkbg-800 p-4 rounded-2xl border border-slate-200 dark:border-darkbg-700 shadow-sm flex flex-col justify-between";
-                
-                const isLive = m.status === 'ao-vivo';
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-center mb-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                        <span>${m.league}</span>
-                        ${isLive ? `<span class="text-red-500 flex items-center gap-1 font-bold"><span class="w-1.5 h-1.5 rounded-full bg-red-500 pulse-live"></span> ${m.time}</span>` : `<span>${m.time}</span>`}
-                    </div>
-                    <div class="space-y-2 mb-3">
-                        <div class="flex justify-between items-center font-bold text-sm">
-                            <span class="text-slate-800 dark:text-slate-100">${m.home}</span>
-                            <span class="text-pitch-primary font-black text-base">${m.homeScore}</span>
-                        </div>
-                        <div class="flex justify-between items-center font-bold text-sm">
-                            <span class="text-slate-800 dark:text-slate-100">${m.away}</span>
-                            <span class="text-pitch-primary font-black text-base">${m.awayScore}</span>
-                        </div>
-                    </div>
-                    <button onclick="showToast('Estatísticas da partida em tempo real salvas no seu hub!', 'success')" class="w-full py-1.5 bg-slate-100 dark:bg-darkbg-700 hover:bg-pitch-primary hover:text-darkbg-900 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-bold transition">
-                        Acompanhar Partida
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function filterMatches(status) {
-            activeMatchFilter = status;
-            document.querySelectorAll('.match-tab-btn').forEach(btn => {
-                btn.className = "match-tab-btn px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition";
-            });
-            
-            if(status === 'ao-vivo') document.getElementById('btnMatchLive').className = "match-tab-btn px-4 py-2 rounded-lg bg-pitch-primary text-darkbg-900 font-bold transition shadow-sm";
-            if(status === 'hoje') document.getElementById('btnMatchToday').className = "match-tab-btn px-4 py-2 rounded-lg bg-pitch-primary text-darkbg-900 font-bold transition shadow-sm";
-            if(status === 'encerrados') document.getElementById('btnMatchEnded').className = "match-tab-btn px-4 py-2 rounded-lg bg-pitch-primary text-darkbg-900 font-bold transition shadow-sm";
-
-            renderMatches();
-        }
-
-        // Render Posts Grid
-        function renderPosts() {
-            const grid = document.getElementById('postsGrid');
-            const noPosts = document.getElementById('noPostsFound');
-            grid.innerHTML = '';
-
-            const filtered = articlesData.filter(post => {
-                const matchCat = activeCategory === 'todos' || post.category === activeCategory;
-                const matchQuery = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                   post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                   post.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchCat && matchQuery;
-            });
-
-            document.getElementById('postsCount').innerText = `${filtered.length} Publicações`;
-
-            if (filtered.length === 0) {
-                noPosts.classList.remove('hidden');
-                grid.classList.add('hidden');
-            } else {
-                noPosts.classList.add('hidden');
-                grid.classList.remove('hidden');
-
-                filtered.forEach(post => {
-                    const card = document.createElement('article');
-                    card.className = "bg-white dark:bg-darkbg-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-slate-200 dark:border-darkbg-700 flex flex-col justify-between transition duration-300 group";
-                    
-                    card.innerHTML = `
-                        <div>
-                            <div class="relative h-48 overflow-hidden">
-                                <img src="${post.image}" alt="${post.title}" 
-                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop';">
-                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-pitch-primary text-darkbg-900 shadow">
-                                    ${post.categoryLabel}
-                                </span>
-                            </div>
-                            <div class="p-5">
-                                <div class="flex items-center text-[11px] text-slate-400 space-x-3 mb-2">
-                                    <span><i class="fa-regular fa-calendar mr-1"></i>${post.date}</span>
-                                    <span><i class="fa-regular fa-clock mr-1"></i>${post.readTime} min</span>
-                                </div>
-                                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-pitch-primary transition line-clamp-2 mb-2 font-heading">
-                                    ${post.title}
-                                </h3>
-                                <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed mb-4">
-                                    ${post.summary}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="px-5 pb-5 pt-0 mt-auto flex items-center justify-between border-t border-slate-100 dark:border-darkbg-700/50 pt-3">
-                            <span class="text-[11px] font-medium text-slate-400"><i class="fa-regular fa-user mr-1"></i>${post.author}</span>
-                            <button onclick="openArticleModal(${post.id})" class="px-3 py-1.5 bg-slate-100 dark:bg-darkbg-700 hover:bg-pitch-primary hover:text-darkbg-900 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition">
-                                Ler Artigo <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
-                            </button>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            }
-        }
-
-        function filterPosts(cat) {
-            activeCategory = cat;
-            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-cat') === cat) {
-                    btn.className = "cat-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wider transition bg-pitch-primary text-darkbg-900 shadow-md";
-                } else {
-                    btn.className = "cat-filter-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-200 dark:bg-darkbg-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-darkbg-700 transition";
-                }
-            });
-            renderPosts();
-        }
-
-        // Search Setup
-        function setupSearch() {
-            const input = document.getElementById('searchInput');
-            const mobileInput = document.getElementById('mobileSearchInput');
-            const clearBtn = document.getElementById('clearSearchBtn');
-
-            const handle = (val) => {
-                searchQuery = val;
-                if (val.trim().length > 0) clearBtn.classList.remove('hidden');
-                else clearBtn.classList.add('hidden');
-                renderPosts();
-            };
-
-            input.addEventListener('input', (e) => handle(e.target.value));
-            mobileInput.addEventListener('input', (e) => handle(e.target.value));
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('mobileSearchInput').value = '';
-            document.getElementById('clearSearchBtn').classList.add('hidden');
-            searchQuery = '';
-            renderPosts();
-        }
-
-        function resetAllFilters() {
-            clearSearch();
-            filterPosts('todos');
-        }
-
-        // Render League Tables
-        function renderLeagueTable(leagueKey) {
-            currentLeague = leagueKey;
-            const body = document.getElementById('leagueTableBody');
-            body.innerHTML = '';
-
-            // Update Tab UI
-            document.querySelectorAll('.league-tab').forEach(t => t.className = "league-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-white transition");
-            document.getElementById(`tab-${leagueKey}`).className = "league-tab px-3 py-1.5 rounded-lg bg-pitch-primary text-darkbg-900 font-bold transition";
-
-            const data = leagueTables[leagueKey] || [];
-            data.forEach((row, idx) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 dark:hover:bg-darkbg-800/50 transition";
-                
-                const posBadge = idx === 0 ? 'bg-amber-400 text-darkbg-900 font-black' : (idx < 3 ? 'bg-pitch-primary/20 text-pitch-primary' : 'bg-slate-200 dark:bg-darkbg-700 text-slate-500');
-
-                tr.innerHTML = `
-                    <td class="py-3 px-4">
-                        <span class="w-6 h-6 inline-flex items-center justify-center rounded-lg text-xs ${posBadge}">${row.pos}</span>
-                    </td>
-                    <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-100">${row.team}</td>
-                    <td class="py-3 px-3 text-center text-slate-500">${row.j}</td>
-                    <td class="py-3 px-3 text-center text-slate-500">${row.v}</td>
-                    <td class="py-3 px-3 text-center text-slate-500">${row.e}</td>
-                    <td class="py-3 px-3 text-center text-slate-500">${row.d}</td>
-                    <td class="py-3 px-3 text-center text-slate-500 hidden sm:table-cell">${row.sg > 0 ? `+${row.sg}` : row.sg}</td>
-                    <td class="py-3 px-4 text-center font-black text-slate-900 dark:text-white text-base">${row.pts}</td>
-                `;
-                body.appendChild(tr);
-            });
-        }
-
-        function switchLeagueTable(key) {
-            renderLeagueTable(key);
-        }
-
-        // Render Transfer Radar Cards
-        function renderTransfers() {
-            const grid = document.getElementById('transferRadarGrid');
-            grid.innerHTML = '';
-
-            transferData.forEach(t => {
-                grid.innerHTML += `
-                    <div class="bg-white dark:bg-darkbg-900 p-5 rounded-2xl border border-slate-200 dark:border-darkbg-700 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="px-2.5 py-0.5 bg-pitch-primary/20 text-pitch-primary text-[10px] font-extrabold uppercase rounded-full">${t.status}</span>
-                                <span class="text-xs font-bold text-amber-400"><i class="fa-solid fa-chart-line mr-1"></i>${t.prob} Probabilidade</span>
-                            </div>
-                            <h4 class="text-base font-bold text-slate-900 dark:text-white mb-2 font-heading">${t.player}</h4>
-                            <div class="flex items-center justify-between text-xs text-slate-500 my-3 p-2 bg-slate-50 dark:bg-darkbg-800 rounded-xl">
-                                <span>${t.from}</span>
-                                <i class="fa-solid fa-arrow-right text-pitch-primary"></i>
-                                <span class="font-bold text-slate-800 dark:text-slate-200">${t.to}</span>
-                            </div>
-                        </div>
-                        <div class="pt-3 border-t border-slate-100 dark:border-darkbg-800 flex justify-between items-center text-xs font-bold">
-                            <span class="text-slate-400">Valor Estimado:</span>
-                            <span class="text-pitch-primary text-sm font-black">${t.val}</span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // Article Modal Handlers
-        function openArticleModal(id) {
-            const article = articlesData.find(a => a.id === id);
-            if (!article) return;
-
-            document.getElementById('modalImage').src = article.image;
-            document.getElementById('modalCategoryBadge').innerText = article.categoryLabel;
-            document.getElementById('modalDate').innerText = article.date;
-            document.getElementById('modalAuthor').innerText = article.author;
-            document.getElementById('modalReadTime').innerText = article.readTime;
-            document.getElementById('modalTitle').innerText = article.title;
-            document.getElementById('modalContent').innerHTML = article.content;
-
-            document.getElementById('articleModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeArticleModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-
-        function copyArticleLink() {
-            const dummy = document.createElement('input');
-            document.body.appendChild(dummy);
-            dummy.value = window.location.href;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-
-            showToast("Link do artigo copiado para a área de transferência!", "success");
-        }
-
-        // Favorite Team Selection
-        function changeFavoriteTeam(teamName) {
-            if(!teamName) return;
-            document.getElementById('favTeamName').innerText = teamName;
-            document.getElementById('favTeamBadge').innerHTML = `<i class="fa-solid fa-shield-cat text-lg"></i>`;
-            showToast(`Clube favorito alterado para ${teamName}!`, "success");
-        }
-
-        // Theme Toggle (Dark / Light)
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                icon.className = "fa-solid fa-moon text-slate-700";
-            } else {
-                html.classList.add('dark');
-                icon.className = "fa-solid fa-sun text-amber-400";
-            }
-        }
-
-        // Form Handlers
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('contactSubmitBtn');
-            btn.disabled = true;
-            btn.innerText = "Enviando...";
-
-            setTimeout(() => {
-                showToast("Sua mensagem foi enviada à equipe editorial!", "success");
-                document.getElementById('contactForm').reset();
-                btn.disabled = false;
-                btn.innerText = "Enviar Mensagem";
-            }, 1000);
-        }
-
-        function handleNewsletterSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('newsletterEmail').value;
-            if(email) {
-                showToast("Inscrição no boletim realizada com sucesso!", "success");
-                document.getElementById('newsletterEmail').value = '';
-            }
-        }
-
-        // Mobile Menu Setup
-        function setupMobileMenu() {
-            const btn = document.getElementById('mobileMenuBtn');
-            const menu = document.getElementById('mobileMenu');
-
-            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-            document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', () => menu.classList.add('hidden')));
-        }
-
-        // Scroll Helpers
-        function scrollToArticles() {
-            document.getElementById('artigos').scrollIntoView({ behavior: 'smooth' });
-        }
-        function scrollToTable() {
-            document.getElementById('tabelas').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Custom Toast System (NO ALERTS)
-        function showToast(msg, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `fixed bottom-5 right-5 z-50 px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold text-darkbg-900 bg-pitch-primary flex items-center space-x-2 transition duration-300 transform translate-y-0`;
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i><span>${msg}</span>`;
-
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    </script>
 </body>
 </html>
