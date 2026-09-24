@@ -1,131 +1,560 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogos da Semana</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f4f6f8;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futebol MZ - Notícias e Análises</title>
 
-    /* Cabeçalho Clicável */
-    header {
-      background-color: #1e293b;
-      color: white;
-      padding: 1rem 2rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
+body{
+  background:#07110c;
+  color:#fff;
+}
 
-    .refresh-badge {
-      font-size: 0.85rem;
-      background-color: #3b82f6;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-    }
+header{
+  background:linear-gradient(135deg,#087a3b,#04351c);
+  padding:18px 6%;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  box-shadow:0 3px 15px #0008;
+}
 
-    /* Seção de Jogos */
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+.nav{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    .card-jogo {
-      background-color: white;
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+.logo{
+  font-size:25px;
+  font-weight:bold;
+}
 
-    .confronto {
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
+.logo span{
+  color:#8cffb5;
+}
 
-    /* Barra de Probabilidades em Porcentagem */
-    .prob-bar {
-      display: flex;
-      height: 24px;
-      border-radius: 12px;
-      overflow: hidden;
-      background-color: #e2e8f0;
-      font-size: 0.75rem;
-      color: white;
-      text-align: center;
-      line-height: 24px;
-    }
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:20px;
+  font-weight:bold;
+}
 
-    .time-a { background-color: #10b981; }
-    .empate { background-color: #6b7280; }
-    .time-b { background-color: #ef4444; }
-  </style>
+nav a:hover{
+  color:#8cffb5;
+}
+
+.hero{
+  min-height:420px;
+  display:flex;
+  align-items:center;
+  padding:60px 6%;
+  background:
+  linear-gradient(#0008,#0009),
+  url("https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1600&q=80")
+  center/cover;
+}
+
+.hero-content{
+  max-width:700px;
+}
+
+.hero h1{
+  font-size:48px;
+  margin-bottom:15px;
+}
+
+.hero p{
+  font-size:18px;
+  color:#ddd;
+  line-height:1.6;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:25px;
+  background:#16a05a;
+  color:white;
+  padding:13px 22px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:45px 20px;
+}
+
+.title{
+  margin-bottom:25px;
+}
+
+.title h2{
+  font-size:30px;
+}
+
+.title p{
+  color:#aaa;
+  margin-top:8px;
+}
+
+/* JOGO DO DIA */
+.match{
+  background:linear-gradient(145deg,#10291a,#08150d);
+  border:1px solid #1d5635;
+  border-radius:18px;
+  padding:30px;
+  margin-bottom:35px;
+}
+
+.match-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.badge{
+  background:#159b55;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.match-teams{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:40px;
+  text-align:center;
+}
+
+.team{
+  width:180px;
+}
+
+.team-icon{
+  width:80px;
+  height:80px;
+  margin:auto auto 12px;
+  border-radius:50%;
+  background:#183d27;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:40px;
+}
+
+.vs{
+  font-size:22px;
+  font-weight:bold;
+  color:#80b996;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:30px;
+}
+
+.stat{
+  background:#07110c;
+  border:1px solid #1d3d29;
+  border-radius:12px;
+  padding:18px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:25px;
+  color:#70e89c;
+  margin-bottom:5px;
+}
+
+.stat span{
+  color:#aaa;
+  font-size:13px;
+}
+
+/* ANÁLISE */
+.analysis{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.analysis-card{
+  background:#0c1b12;
+  border:1px solid #1b3826;
+  border-radius:15px;
+  padding:22px;
+}
+
+.analysis-card h3{
+  margin-bottom:15px;
+  color:#76eaa0;
+}
+
+.form{
+  display:flex;
+  gap:7px;
+  margin-top:12px;
+}
+
+.form span{
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:6px;
+  background:#1b3927;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.info-list{
+  list-style:none;
+}
+
+.info-list li{
+  padding:10px 0;
+  border-bottom:1px solid #1b3023;
+  color:#ccc;
+}
+
+/* NOTÍCIAS */
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.news{
+  background:#0d1c13;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid #193522;
+}
+
+.news img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+}
+
+.news-content{
+  padding:18px;
+}
+
+.news h3{
+  margin-bottom:10px;
+}
+
+.news p{
+  color:#aaa;
+  line-height:1.5;
+  font-size:14px;
+}
+
+.news a{
+  display:inline-block;
+  margin-top:15px;
+  color:#69e99a;
+  text-decoration:none;
+}
+
+/* SOBRE */
+.about{
+  background:#0b1910;
+  border-radius:18px;
+  padding:30px;
+  line-height:1.7;
+  color:#ccc;
+}
+
+footer{
+  background:#030805;
+  padding:35px 20px;
+  text-align:center;
+  color:#888;
+  margin-top:30px;
+}
+
+footer a{
+  color:#70e89c;
+  margin:0 8px;
+  text-decoration:none;
+}
+
+/* MOBILE */
+@media(max-width:800px){
+  nav{
+    display:none;
+  }
+
+  .hero h1{
+    font-size:35px;
+  }
+
+  .match-teams{
+    gap:15px;
+  }
+
+  .team{
+    width:120px;
+  }
+
+  .analysis,
+  .news-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Cabeçalho clicável -->
-  <header onclick="recarregarPagina()">
-    <h1>Portal do Futebol</h1>
-    <span class="refresh-badge">Clique para atualizar 🔄</span>
-  </header>
+<header>
+  <div class="nav">
+    <div class="logo">⚽ Futebol <span>MZ</span></div>
 
-  <main class="container">
-    <h2>Jogos da Semana & Probabilidades</h2>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#jogo">Jogo do Dia</a>
+      <a href="#noticias">Notícias</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- Exemplo de Jogo 1 -->
-    <div class="card-jogo">
-      <div class="confronto">
-        <span>Flamengo</span>
-        <span>vs</span>
-        <span>Palmeiras</span>
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <h1>O futebol em destaque todos os dias</h1>
+    <p>
+      Notícias, jogos, estatísticas e análises dos principais
+      acontecimentos do mundo do futebol.
+    </p>
+
+    <a href="#jogo" class="btn">Ver análise de hoje</a>
+  </div>
+</section>
+
+<main class="container">
+
+<section id="jogo">
+
+  <div class="title">
+    <h2>🔥 Jogo em Destaque Hoje</h2>
+    <p>Atualize esta seção diariamente com as informações do jogo.</p>
+  </div>
+
+  <div class="match">
+
+    <div class="match-header">
+      <span class="badge">ANÁLISE DO DIA</span>
+      <span>24 Setembro 2026</span>
+    </div>
+
+    <div class="match-teams">
+
+      <div class="team">
+        <div class="team-icon">⚽</div>
+        <h3>Equipe A</h3>
+        <p>Casa</p>
       </div>
-      <div class="prob-bar">
-        <div class="time-a" style="width: 45%;">45%</div>
-        <div class="empate" style="width: 30%;">30%</div>
-        <div class="time-b" style="width: 25%;">25%</div>
+
+      <div class="vs">VS</div>
+
+      <div class="team">
+        <div class="team-icon">⚽</div>
+        <h3>Equipe B</h3>
+        <p>Visitante</p>
+      </div>
+
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <strong>4</strong>
+        <span>Vitórias recentes - Equipe A</span>
+      </div>
+
+      <div class="stat">
+        <strong>3</strong>
+        <span>Vitórias recentes - Equipe B</span>
+      </div>
+
+      <div class="stat">
+        <strong>12</strong>
+        <span>Golos marcados nos últimos jogos</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="analysis">
+
+    <div class="analysis-card">
+      <h3>📊 Forma recente</h3>
+
+      <h4>Equipe A</h4>
+      <div class="form">
+        <span>V</span>
+        <span>V</span>
+        <span>E</span>
+        <span>V</span>
+        <span>D</span>
+      </div>
+
+      <br>
+
+      <h4>Equipe B</h4>
+      <div class="form">
+        <span>V</span>
+        <span>E</span>
+        <span>V</span>
+        <span>D</span>
+        <span>V</span>
       </div>
     </div>
 
-    <!-- Exemplo de Jogo 2 -->
-    <div class="card-jogo">
-      <div class="confronto">
-        <span>Real Madrid</span>
-        <span>vs</span>
-        <span>Barcelona</span>
-      </div>
-      <div class="prob-bar">
-        <div class="time-a" style="width: 50%;">50%</div>
-        <div class="empate" style="width: 20%;">20%</div>
-        <div class="time-b" style="width: 30%;">30%</div>
-      </div>
+    <div class="analysis-card">
+      <h3>🔎 Fatores para observar</h3>
+
+      <ul class="info-list">
+        <li>🏟️ Desempenho como mandante</li>
+        <li>✈️ Desempenho como visitante</li>
+        <li>⚽ Média de golos marcados</li>
+        <li>🛡️ Média de golos sofridos</li>
+        <li>👥 Confrontos anteriores</li>
+        <li>🚑 Jogadores indisponíveis</li>
+      </ul>
     </div>
-  </main>
 
-  <script>
-    // Função acionada ao clicar no cabeçalho
-    function recarregarPagina() {
-      window.location.reload();
-    }
+    <div class="analysis-card">
+      <h3>⚽ Ataque</h3>
 
-    // Configura o auto-refresh para recarregar a cada 60 segundos
-    setTimeout(() => {
-      window.location.reload();
-    }, 60000);
-  </script>
+      <ul class="info-list">
+        <li>Equipe A — 8 golos nos últimos 5 jogos</li>
+        <li>Equipe B — 7 golos nos últimos 5 jogos</li>
+        <li>Equipe A — média de 1,6 golos/jogo</li>
+        <li>Equipe B — média de 1,4 golos/jogo</li>
+      </ul>
+    </div>
+
+    <div class="analysis-card">
+      <h3>🛡️ Defesa</h3>
+
+      <ul class="info-list">
+        <li>Equipe A — 5 golos sofridos</li>
+        <li>Equipe B — 6 golos sofridos</li>
+        <li>Últimos confrontos devem ser considerados</li>
+        <li>Lesões e suspensões podem alterar o cenário</li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+
+<section id="noticias" style="margin-top:55px">
+
+  <div class="title">
+    <h2>📰 Últimas Notícias</h2>
+    <p>Conteúdo atualizado sobre futebol.</p>
+  </div>
+
+  <div class="news-grid">
+
+    <article class="news">
+      <img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=800&q=80">
+      <div class="news-content">
+        <h3>Grande jogo movimenta o futebol</h3>
+        <p>Confira as principais informações antes da partida.</p>
+        <a href="#">Ler notícia →</a>
+      </div>
+    </article>
+
+    <article class="news">
+      <img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=800&q=80">
+      <div class="news-content">
+        <h3>Times preparam-se para o confronto</h3>
+        <p>Veja as novidades das equipes antes do jogo.</p>
+        <a href="#">Ler notícia →</a>
+      </div>
+    </article>
+
+    <article class="news">
+      <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80">
+      <div class="news-content">
+        <h3>Estatísticas que chamam atenção</h3>
+        <p>Confira números e informações importantes.</p>
+        <a href="#">Ler notícia →</a>
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+<section id="sobre" style="margin-top:55px">
+
+  <div class="title">
+    <h2>ℹ️ Sobre o Futebol MZ</h2>
+  </div>
+
+  <div class="about">
+    <p>
+      O Futebol MZ é um portal dedicado a notícias, jogos,
+      estatísticas e análises de futebol. A nossa proposta é
+      apresentar informações de forma simples, rápida e organizada.
+    </p>
+
+    <br>
+
+    <p>
+      As análises são informativas e baseadas nos dados disponíveis.
+      Estatísticas e resultados podem mudar, por isso recomendamos
+      consultar fontes oficiais das competições e dos clubes.
+    </p>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 Futebol MZ — Todos os direitos reservados.</p>
+
+  <br>
+
+  <a href="#">Sobre</a>
+  <a href="#">Contacto</a>
+  <a href="#">Privacidade</a>
+</footer>
 
 </body>
 </html>
